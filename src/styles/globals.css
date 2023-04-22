@@ -6,10 +6,11 @@
     'Fira Mono', 'Droid Sans Mono', 'Courier New', monospace;
 
   --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
+  --background-start-rgb: 252, 252, 252;
   --background-end-rgb: 255, 255, 255;
 
-  --tint: linear-gradient(#00000010, #00000040);
+  --tint: linear-gradient(#000000dd, #000000ee);
+  --light-tint: linear-gradient(#00000011, #00000012);
 
   --primary-glow: conic-gradient(
     from 180deg at 50% 50%,
@@ -112,4 +113,11 @@ a {
 #__next {
   width: 100vw;
   height: 100vw;
+}
+
+@font-face {
+  font-family: 'Meows';
+  src: url('../../public/MeowsNepilIllustratioRegular-owjVq.ttf');
+  font-weight: 400;
+  font-style: normal;
 }

@@ -1,9 +1,34 @@
-import Head from "next/head";
+import MessageDisplay from "@/components/message";
+import { useMessages } from "@/model/messages";
 import styles from "@/styles/Home.module.css";
-import { Box, Button, Grid, Input, Sheet } from "@mui/joy";
 import SendIcon from "@mui/icons-material/Send";
+import { Box, Button, Divider, Grid, Input, Stack } from "@mui/joy";
+import Head from "next/head";
+import React from "react";
+import { useMount } from "react-use";
 
 export default function Home() {
+  const [query, setQuery] = React.useState("");
+  const { messages, push } = useMessages();
+
+  useMount(() => {
+    push({
+      content: [
+        { text: "make me a sample", type: "text" },
+        { text: "a", type: "caticon" },
+      ],
+      sentiment: 0.5,
+      from: "human",
+    });
+    push({
+      content: [
+        { text: "make me a sample", type: "text" },
+        { text: "aAbBcC", type: "caticon" },
+      ],
+      sentiment: 1.0,
+      from: "cat",
+    });
+  });
   return (
     <>
       <Head>
@@ -15,13 +40,22 @@ export default function Home() {
       <Grid
         container
         spacing={2}
-        sx={{ flexGrow: 1, width: "100%", height: "100%" }}
+        sx={{ flexGrow: 1, width: "100vw", height: "100vh", margin: 0 }}
       >
-        <Grid className={styles.sidebar} xs={2}></Grid>
-        <Grid xs={10} sx={{ display: "flex", maxHeight: "100vh" }}>
+        <Grid className={styles.sidebar} xs={2} sx={{ height: 1 }}></Grid>
+        <Grid xs={10} sx={{ display: "flex", height: 1, padding: 0 }}>
           <Box sx={{ display: "flex", flexDirection: "column", flex: 1 }}>
-            <Box sx={{ display: "flex", flex: 1 }}></Box>
-            <Box sx={{ display: "flex", justifyContent: "center" }}>
+            <Box sx={{ display: "flex", flex: 1 }}>
+              <Stack sx={{ width: 1 }}>
+                {messages.map((message, i) => (
+                  <>
+                    <MessageDisplay key={i} message={message} index={i} />
+                    <Divider />
+                  </>
+                ))}
+              </Stack>
+            </Box>
+            <Box sx={{ display: "flex", justifyContent: "center", padding: 2 }}>
               <Input
                 sx={{
                   boxShadow: "sm",
@@ -29,10 +63,22 @@ export default function Home() {
                   maxWidth: "40em",
                 }}
                 endDecorator={
-                  <Button variant="outlined">
+                  <Button variant="plain">
                     <SendIcon />
                   </Button>
                 }
+                value={query}
+                onChange={(e) => {
+                  setQuery(e.target.value);
+                }}
+                onKeyUp={(e) => {
+                  if (e.key === "Enter") {
+                    push({
+                      from: "human",
+                      content: [{ text: query, type: "text" }],
+                    });
+                  }
+                }}
                 placeholder="Chat with the cat..."
               />
             </Box>
