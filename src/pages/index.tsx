@@ -6,29 +6,12 @@ import { Box, Button, Divider, Grid, Input, Stack } from "@mui/joy";
 import Head from "next/head";
 import React from "react";
 import { useMount } from "react-use";
+import Typist from "react-typist";
 
 export default function Home() {
   const [query, setQuery] = React.useState("");
   const { messages, push } = useMessages();
 
-  useMount(() => {
-    push({
-      content: [
-        { text: "make me a sample", type: "text" },
-        { text: "a", type: "caticon" },
-      ],
-      sentiment: 0.5,
-      from: "human",
-    });
-    push({
-      content: [
-        { text: "make me a sample", type: "text" },
-        { text: "aAbBcC", type: "caticon" },
-      ],
-      sentiment: 1.0,
-      from: "cat",
-    });
-  });
   return (
     <>
       <Head>
@@ -47,12 +30,14 @@ export default function Home() {
           <Box sx={{ display: "flex", flexDirection: "column", flex: 1 }}>
             <Box sx={{ display: "flex", flex: 1 }}>
               <Stack sx={{ width: 1 }}>
-                {messages.map((message, i) => (
-                  <>
-                    <MessageDisplay key={i} message={message} index={i} />
-                    <Divider />
-                  </>
-                ))}
+                {messages.map((message, i) => {
+                  return (
+                    <Box key={i}>
+                      <MessageDisplay message={message} index={i} />
+                      <Divider />
+                    </Box>
+                  );
+                })}
               </Stack>
             </Box>
             <Box sx={{ display: "flex", justifyContent: "center", padding: 2 }}>

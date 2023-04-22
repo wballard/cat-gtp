@@ -33,7 +33,18 @@ export type Message = {
  * Hook into the data model and keep track of a list of messages.
  */
 export function useMessages() {
-  const [messages, { push }] = useList<Message>();
+  const [messages, { push }] = useList<Message>([
+    {
+      content: [{ text: "make me a sample", type: "text" }],
+      sentiment: 0.5,
+      from: "human",
+    },
+    {
+      content: [{ text: "make me a sample", type: "text" }],
+      sentiment: 1.0,
+      from: "cat",
+    },
+  ]);
 
   return {
     messages,

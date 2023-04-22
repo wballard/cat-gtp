@@ -2,8 +2,10 @@ import { Message, MessageFrom } from "@/model/messages";
 import { Avatar, Box, Stack, Typography } from "@mui/joy";
 import PersonIcon from "@mui/icons-material/Person";
 import styles from "./message.module.css";
+import { TypeAnimation } from "react-type-animation";
+import React from "react";
 
-type MessageProps = {
+type MessageDisplayProps = {
   index: number;
   message: Message;
 };
@@ -11,7 +13,12 @@ type MessageProps = {
 /**
  * A single display message in a chat like stack of messages.
  */
-export default function MessageDisplay({ message, index }: MessageProps) {
+export default function MessageDisplay({
+  message,
+  index,
+}: MessageDisplayProps) {
+  const displayText = buildInnerMessage(message);
+  const [initialTyped, setInitialTyped] = React.useState(false);
   return (
     <Box
       className={index % 2 ? styles.response : ""}
@@ -25,17 +32,24 @@ export default function MessageDisplay({ message, index }: MessageProps) {
         <Avatar variant="plain">
           <From message={message} />
         </Avatar>
-        <Stack direction="row" sx={{ paddingTop: 0 }}>
-          {message.content.map((word, i) => (
-            <Typography
-              key={i}
-              level="body1"
-              sx={{ fontFamily: word.type === "caticon" ? "Meows" : undefined }}
-            >
-              {word.text}
+        <Box sx={{ paddingTop: 1 }}>
+          {message.from === "cat" ? (
+            <Typography>
+              {initialTyped ? (
+                <>
+                  <Typography>{displayText}</Typography>
+                  <Typography sx={{ fontFamily: "Meows" }}>A</Typography>
+                </>
+              ) : (
+                <TypeAnimation
+                  sequence={[displayText, () => setInitialTyped(true), ""]}
+                />
+              )}
             </Typography>
-          ))}
-        </Stack>
+          ) : (
+            <Typography>{displayText}</Typography>
+          )}
+        </Box>
       </Stack>
     </Box>
   );
@@ -45,18 +59,26 @@ export default function MessageDisplay({ message, index }: MessageProps) {
  * Moodicons. CatStyle.
  */
 const CatMoodRange = ["😻", "😽", "😺", "😾", "😿", "🙀"];
+const CatIcons = "aAbBcC";
 
-type FromProps = {
+type MessageProps = {
   message: Message;
 };
 
 /**
+ * Just the text of the message.
+ */
+function buildInnerMessage(message: Message) {
+  return message.content.map((word, i) => word.text).join(" ");
+}
+
+/**
  * Message from source. Considers the sentiment, from low 'bad' to high 'good'.
  */
-function From({ message }: FromProps) {
+function From({ message }: MessageProps) {
   const mood =
     CatMoodRange[
-      Math.round((1 - message.sentiment) * (CatMoodRange.length - 1))
+      Math.round((1 - (message.sentiment ?? 1.0)) * (CatMoodRange.length - 1))
     ];
   if (message.from === "human") {
     return <PersonIcon />;
