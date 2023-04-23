@@ -8,6 +8,7 @@ import React from "react";
 type MessageDisplayProps = {
   index: number;
   message: Message;
+  scrollToMe: boolean;
 };
 
 /**
@@ -16,13 +17,26 @@ type MessageDisplayProps = {
 export default function MessageDisplay({
   message,
   index,
+  scrollToMe,
 }: MessageDisplayProps) {
   const displayText = buildInnerMessage(message);
   const [initialTyped, setInitialTyped] = React.useState(false);
+  const scrollMe = React.useCallback(
+    (ref?: HTMLDivElement) => {
+      if (ref && scrollToMe) {
+        ref.scrollIntoView({
+          behavior: "smooth",
+          block: "end",
+        });
+      }
+    },
+    [scrollToMe]
+  );
   return (
     <Box
       className={index % 2 ? styles.response : ""}
       sx={{ display: "flex", justifyContent: "center" }}
+      ref={(ref: HTMLDivElement) => scrollMe(ref)}
     >
       <Stack
         sx={{ width: 1, padding: 2, maxWidth: "40em", minWidth: "20em" }}

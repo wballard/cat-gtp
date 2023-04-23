@@ -29,24 +29,33 @@ export default function Home() {
       <Grid
         container
         spacing={2}
-        sx={{ flexGrow: 1, width: "100vw", height: "100vh", margin: 0 }}
+        sx={{
+          flexGrow: 1,
+          width: 1,
+          height: 1,
+          margin: 0,
+          maxHeight: 1,
+          maxWidth: 1,
+        }}
       >
         <Grid className={styles.sidebar} xs={2} sx={{ height: 1 }}></Grid>
         <Grid xs={10} sx={{ display: "flex", height: 1, padding: 0 }}>
           <Box sx={{ display: "flex", flexDirection: "column", flex: 1 }}>
             {loading && <LinearProgress sx={{ maxHeight: "1em" }} />}
-            <Box sx={{ display: "flex", flex: 1 }}>
-              <Stack sx={{ width: 1 }}>
-                {messages.map((message, i) => {
-                  return (
-                    <Box key={i}>
-                      <MessageDisplay message={message} index={i} />
-                      <Divider />
-                    </Box>
-                  );
-                })}
-              </Stack>
-            </Box>
+            <Stack sx={{ width: 1, flex: "1 1 auto", overflowY: "scroll" }}>
+              {messages.map((message, i) => {
+                return (
+                  <Box key={i}>
+                    <MessageDisplay
+                      message={message}
+                      index={i}
+                      scrollToMe={i === messages.length - 1}
+                    />
+                    <Divider />
+                  </Box>
+                );
+              })}
+            </Stack>
             <Box sx={{ display: "flex", justifyContent: "center", padding: 2 }}>
               <Input
                 sx={{
