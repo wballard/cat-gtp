@@ -43,8 +43,6 @@ export default function Home() {
           width: 1,
           height: 1,
           margin: 0,
-          maxHeight: 1,
-          maxWidth: 1,
         }}
       >
         <Grid className={styles.sidebar} xs={2} sx={{ height: 1 }}>
@@ -94,7 +92,7 @@ export default function Home() {
                 display: "flex",
                 justifyContent: "center",
                 padding: 2,
-                marginBottom: 6,
+                marginBottom: 8,
               }}
             >
               <Input

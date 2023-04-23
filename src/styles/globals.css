@@ -84,9 +84,10 @@
 
 html,
 body {
-  max-width: 100vw;
-  max-height: 100vh;
-  overflow-x: hidden;
+  height: 100vh;
+  width: 100vw;
+  min-width: 100vw;
+  min-height: -webkit-fill-available;
 }
 
 body {
@@ -111,10 +112,8 @@ a {
 }
 
 #__next {
-  width: 100vw;
-  max-width: 100vw;
-  height: 100vh;
-  max-height: 100vh;
+  width: 100%;
+  height: 100%;
 }
 
 @font-face {
