@@ -92,7 +92,6 @@ export default function Home() {
                 display: "flex",
                 justifyContent: "center",
                 padding: 2,
-                marginBottom: 8,
               }}
             >
               <Input
@@ -100,6 +99,7 @@ export default function Home() {
                   boxShadow: "sm",
                   flex: 1,
                   maxWidth: "40em",
+                  paddingBottom: "env(safe-area-inset-bottom)",
                 }}
                 endDecorator={
                   <Button variant="plain" onClick={() => sendMessage()}>

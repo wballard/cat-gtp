@@ -85,8 +85,11 @@
 html,
 body {
   height: 100vh;
+  height: -webkit-fill-available;
   width: 100vw;
   min-width: 100vw;
+  min-height: 100svh;
+  min-height: 100vh;
   min-height: -webkit-fill-available;
 }
 
@@ -121,4 +124,8 @@ a {
   src: url('../../public/MeowsNepilIllustratioRegular-owjVq.ttf');
   font-weight: 400;
   font-style: normal;
+}
+
+#__ios {
+  padding-bottom: env(safe-area-inset-bottom);
 }
