@@ -2,15 +2,21 @@ import MessageDisplay from "@/components/message";
 import { useMessages } from "@/model/messages";
 import styles from "@/styles/Home.module.css";
 import SendIcon from "@mui/icons-material/Send";
-import { Box, Button, Divider, Grid, Input, Stack } from "@mui/joy";
+import {
+  Box,
+  Button,
+  Divider,
+  Grid,
+  Input,
+  LinearProgress,
+  Stack,
+} from "@mui/joy";
 import Head from "next/head";
 import React from "react";
-import { useMount } from "react-use";
-import Typist from "react-typist";
 
 export default function Home() {
   const [query, setQuery] = React.useState("");
-  const { messages, push } = useMessages();
+  const { loading, messages, humanAsks } = useMessages();
 
   return (
     <>
@@ -28,6 +34,7 @@ export default function Home() {
         <Grid className={styles.sidebar} xs={2} sx={{ height: 1 }}></Grid>
         <Grid xs={10} sx={{ display: "flex", height: 1, padding: 0 }}>
           <Box sx={{ display: "flex", flexDirection: "column", flex: 1 }}>
+            {loading && <LinearProgress sx={{ maxHeight: "1em" }} />}
             <Box sx={{ display: "flex", flex: 1 }}>
               <Stack sx={{ width: 1 }}>
                 {messages.map((message, i) => {
@@ -57,11 +64,9 @@ export default function Home() {
                   setQuery(e.target.value);
                 }}
                 onKeyUp={(e) => {
-                  if (e.key === "Enter") {
-                    push({
-                      from: "human",
-                      content: [{ text: query, type: "text" }],
-                    });
+                  if (e.key === "Enter" && !loading && query.length) {
+                    humanAsks(query);
+                    setQuery("");
                   }
                 }}
                 placeholder="Chat with the cat..."

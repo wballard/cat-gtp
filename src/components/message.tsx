@@ -69,7 +69,7 @@ type MessageProps = {
  * Just the text of the message.
  */
 function buildInnerMessage(message: Message) {
-  return message.content.map((word, i) => word.text).join(" ");
+  return message.content;
 }
 
 /**

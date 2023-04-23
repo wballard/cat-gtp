@@ -1,4 +1,5 @@
 import { useList } from "react-use";
+import { useSentiment } from "./sentiment";
 
 /**
  * Who sent ye?
@@ -12,42 +13,56 @@ export type MessageFrom = "human" | "cat";
 export type WordType = "text" | "caticon";
 
 /**
- * Words make up a message. Not just using a plain string
- * here since we can have variable words + icons.
- */
-export type Word = {
-  text: string;
-  type: WordType;
-};
-
-/**
  * Message. Not message.
  */
 export type Message = {
   from: MessageFrom;
   sentiment?: number;
-  content: Word[];
+  content: string;
 };
 
 /**
  * Hook into the data model and keep track of a list of messages.
  */
 export function useMessages() {
+  const { loading, predict } = useSentiment();
   const [messages, { push }] = useList<Message>([
     {
-      content: [{ text: "make me a sample", type: "text" }],
+      content: "make me a sample",
       sentiment: 0.5,
       from: "human",
     },
     {
-      content: [{ text: "make me a sample", type: "text" }],
+      content: "I am from the cat, meow",
       sentiment: 1.0,
       from: "cat",
     },
   ]);
 
+  /**
+   * Ahh, sweet 👥, asking the 🐈‍⬛ for wisdom.
+   *
+   */
+  const humanAsks = (text: string) => {
+    // make a human message
+    const fromHuman: Message = {
+      from: "human",
+      content: text,
+      sentiment: predict(text)?.score,
+    };
+    push(fromHuman);
+    // and the cat responds
+    const fromCat: Message = {
+      from: "cat",
+      content: "meow",
+      sentiment: fromHuman.sentiment,
+    };
+    push(fromCat);
+  };
+
   return {
+    loading,
     messages,
-    push,
+    humanAsks,
   };
 }
