@@ -2,6 +2,7 @@ import MessageDisplay from "@/components/message";
 import { useMessages } from "@/model/messages";
 import styles from "@/styles/Home.module.css";
 import SendIcon from "@mui/icons-material/Send";
+import GithubIcon from "@mui/icons-material/GitHub";
 import {
   Box,
   Button,
@@ -39,7 +40,16 @@ export default function Home() {
           maxWidth: 1,
         }}
       >
-        <Grid className={styles.sidebar} xs={2} sx={{ height: 1 }}></Grid>
+        <Grid className={styles.sidebar} xs={2} sx={{ height: 1 }}>
+          <Button
+            variant="plain"
+            onClick={() =>
+              window.location.assign("https://github.com/wballard/cat-gtp")
+            }
+          >
+            <GithubIcon />
+          </Button>
+        </Grid>
         <Grid xs={10} sx={{ display: "flex", height: 1, padding: 0 }}>
           <Box sx={{ display: "flex", flexDirection: "column", flex: 1 }}>
             {loading && <LinearProgress sx={{ maxHeight: "1em" }} />}
