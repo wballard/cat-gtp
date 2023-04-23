@@ -6,6 +6,7 @@ import { TypeAnimation } from "react-type-animation";
 import React from "react";
 import prand from "pure-rand";
 import stringHash from "@sindresorhus/string-hash";
+import { SettingsSuggest } from "@mui/icons-material";
 
 type MessageDisplayProps = {
   index: number;
@@ -23,16 +24,18 @@ export default function MessageDisplay({
 }: MessageDisplayProps) {
   const displayText = buildInnerMessage(message);
   const [initialTyped, setInitialTyped] = React.useState(false);
+  const [scrolled, setScrolled] = React.useState(false);
   const scrollMe = React.useCallback(
     (ref?: HTMLDivElement) => {
-      if (ref && scrollToMe) {
+      if (ref && scrollToMe && !scrolled) {
+        setScrolled(true);
         ref.scrollIntoView({
           behavior: "smooth",
           block: "end",
         });
       }
     },
-    [scrollToMe]
+    [scrollToMe, scrolled]
   );
   return (
     <Box
