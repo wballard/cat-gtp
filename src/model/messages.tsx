@@ -1,5 +1,6 @@
 import { useList } from "react-use";
 import { useSentiment } from "./sentiment";
+import { buildResponse } from "@/components/message";
 
 /**
  * Who sent ye?
@@ -26,18 +27,7 @@ export type Message = {
  */
 export function useMessages() {
   const { loading, predict } = useSentiment();
-  const [messages, { push }] = useList<Message>([
-    {
-      content: "make me a sample",
-      sentiment: 0.5,
-      from: "human",
-    },
-    {
-      content: "I am from the cat, meow",
-      sentiment: 1.0,
-      from: "cat",
-    },
-  ]);
+  const [messages, { push }] = useList<Message>([]);
 
   /**
    * Ahh, sweet 👥, asking the 🐈‍⬛ for wisdom.
@@ -52,12 +42,7 @@ export function useMessages() {
     };
     push(fromHuman);
     // and the cat responds
-    const fromCat: Message = {
-      from: "cat",
-      content: "meow",
-      sentiment: fromHuman.sentiment,
-    };
-    push(fromCat);
+    push(buildResponse(fromHuman));
   };
 
   return {

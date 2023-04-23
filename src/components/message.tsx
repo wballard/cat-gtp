@@ -4,6 +4,8 @@ import PersonIcon from "@mui/icons-material/Person";
 import styles from "./message.module.css";
 import { TypeAnimation } from "react-type-animation";
 import React from "react";
+import prand from "pure-rand";
+import stringHash from "@sindresorhus/string-hash";
 
 type MessageDisplayProps = {
   index: number;
@@ -52,7 +54,9 @@ export default function MessageDisplay({
               {initialTyped ? (
                 <>
                   <Typography>{displayText}</Typography>
-                  <Typography sx={{ fontFamily: "Meows" }}>A</Typography>
+                  <Typography sx={{ fontFamily: "Meows" }}>
+                    {buildTrailingMessage(message)}
+                  </Typography>
                 </>
               ) : (
                 <TypeAnimation
@@ -74,6 +78,17 @@ export default function MessageDisplay({
  */
 const CatMoodRange = ["😻", "😽", "😺", "😾", "😿", "🙀"];
 const CatIcons = "aAbBcC";
+/**
+ * Things cats say.
+ */
+const CatMessages = [
+  "prrrrrrrrrrr prrrrrrr",
+  "mew mew prrrr",
+  "meow mow mow mow mewwwww",
+  "mow ch ch ch ch ch meow",
+  "mrrrrr",
+  "rrrraaaaaaooooooo hssssssssssssssss",
+];
 
 type MessageProps = {
   message: Message;
@@ -84,6 +99,39 @@ type MessageProps = {
  */
 function buildInnerMessage(message: Message) {
   return message.content;
+}
+
+/**
+ * A trailing bit of cat.
+ */
+function buildTrailingMessage(message: Message) {
+  const rng = prand.mersenne(
+    stringHash(message.content) + (message.sentiment ?? 0)
+  );
+  const pickACat = prand.unsafeUniformIntDistribution(
+    0,
+    CatIcons.length - 1,
+    rng
+  );
+  return CatIcons[pickACat];
+}
+
+/**
+ * Cat responds to human.
+ */
+export function buildResponse(fromHuman: Message): Message {
+  const rng = prand.mersenne(
+    stringHash(fromHuman.content) + (fromHuman.sentiment ?? 0)
+  );
+  const response =
+    CatMessages[
+      Math.round((1 - (fromHuman.sentiment ?? 1.0)) * (CatMessages.length - 1))
+    ];
+  return {
+    content: response,
+    sentiment: fromHuman.sentiment ?? 1,
+    from: "cat",
+  };
 }
 
 /**
