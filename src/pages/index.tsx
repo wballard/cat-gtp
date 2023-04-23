@@ -10,6 +10,7 @@ import {
   Input,
   LinearProgress,
   Stack,
+  Typography,
 } from "@mui/joy";
 import Head from "next/head";
 import React from "react";
@@ -42,6 +43,21 @@ export default function Home() {
         <Grid xs={10} sx={{ display: "flex", height: 1, padding: 0 }}>
           <Box sx={{ display: "flex", flexDirection: "column", flex: 1 }}>
             {loading && <LinearProgress sx={{ maxHeight: "1em" }} />}
+            {messages.length === 0 && (
+              <Box
+                sx={{
+                  display: "flex",
+                  flex: 1,
+                  width: 1,
+                  justifyContent: "center",
+                  padding: 2,
+                }}
+              >
+                <Typography level="body2" sx={{ fontStyle: "italic" }}>
+                  Technology does repeat itself. And it rhymes.
+                </Typography>
+              </Box>
+            )}
             <Stack sx={{ width: 1, flex: "1 1 auto", overflowY: "scroll" }}>
               {messages.map((message, i) => {
                 return (
