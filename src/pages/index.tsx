@@ -20,6 +20,13 @@ export default function Home() {
   const [query, setQuery] = React.useState("");
   const { loading, messages, humanAsks } = useMessages();
 
+  const sendMessage = React.useCallback(() => {
+    if (!loading && query.length) {
+      humanAsks(query);
+      setQuery("");
+    }
+  }, [loading, query, humanAsks]);
+
   return (
     <>
       <Head>
@@ -82,7 +89,14 @@ export default function Home() {
                 );
               })}
             </Stack>
-            <Box sx={{ display: "flex", justifyContent: "center", padding: 2 }}>
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+                padding: 2,
+                marginBottom: 6,
+              }}
+            >
               <Input
                 sx={{
                   boxShadow: "sm",
@@ -90,7 +104,7 @@ export default function Home() {
                   maxWidth: "40em",
                 }}
                 endDecorator={
-                  <Button variant="plain">
+                  <Button variant="plain" onClick={() => sendMessage()}>
                     <SendIcon />
                   </Button>
                 }
@@ -99,9 +113,8 @@ export default function Home() {
                   setQuery(e.target.value);
                 }}
                 onKeyUp={(e) => {
-                  if (e.key === "Enter" && !loading && query.length) {
-                    humanAsks(query);
-                    setQuery("");
+                  if (e.key === "Enter") {
+                    sendMessage();
                   }
                 }}
                 placeholder="Chat with the cat..."
