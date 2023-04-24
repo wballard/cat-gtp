@@ -39,9 +39,7 @@ export default function Home() {
         container
         spacing={2}
         sx={{
-          flexGrow: 1,
-          width: 1,
-          height: 1,
+          flex: 1,
           margin: 0,
         }}
       >
@@ -92,7 +90,7 @@ export default function Home() {
                 display: "flex",
                 justifyContent: "center",
                 padding: 2,
-                paddingBottom: 12,
+                paddingBottom: 4,
               }}
             >
               <Input
